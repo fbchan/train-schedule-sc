@@ -4,7 +4,7 @@ pipeline {
         //Docker Hub
         APPS_NAME = "train"
         FQDN = "train.foobz.com.au"
-        DOCKER_IMAGE_NAME = "foobz/train-schedule-sc"
+        DOCKER_IMAGE_NAME = "reg.foobz.com.au/foobz/train-schedule-sc"
     }
     stages {
         stage('Build Apps and Test') {
