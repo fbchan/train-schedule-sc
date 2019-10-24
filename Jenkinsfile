@@ -40,7 +40,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://reg.foobz.com.au', 'docker_hub_login') {
+                    docker.withRegistry('https://reg.foobz.com.au', 'harbor_login') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
