@@ -40,11 +40,17 @@ pipeline {
                 }
             }
         }
-        stage('DeployAppServices - AS3') {
+        stage('DeployToProduction - Kubernetes Cluster1') {
+            when {
+                branch 'master'
+            }
             steps {
-                // Deploy AppServices with AS3
-                milestone(3)
-                
+                milestone(2)
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig_private-foobz-k8s',
+                    configs: 'train-schedule-sc-kube.yaml',
+                    enableConfigSubstitution: true
+                )
             }
         }
     }
