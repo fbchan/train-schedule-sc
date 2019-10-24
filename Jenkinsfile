@@ -47,7 +47,7 @@ pipeline {
             steps {
                 milestone(2)
                 kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig_private-foobz-k8s',
+                    kubeconfigId: 'foobz-mellab-k8s1',
                     configs: 'train-schedule-sc-kube.yaml',
                     enableConfigSubstitution: true
                 )
