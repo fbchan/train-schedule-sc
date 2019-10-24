@@ -13,6 +13,16 @@ pipeline {
                 sh './gradlew build --no-daemon'
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Build and Test Apps '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Build and Test Apps '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
         }
         stage('Build Docker Image') {
             when {
@@ -26,12 +36,32 @@ pipeline {
                     }
                 }
             }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Build Docker Image '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Build Docker Image '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
         }
         stage('Container Security Scan') {
             steps {
                 echo 'Scanning container image for vulnerability ....'
                 sh 'echo "${DOCKER_IMAGE_NAME} `pwd`/Dockerfile" > anchore_images'
                 anchore name: 'anchore_images'
+            }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Container Security Scan '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Container Security Scan '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
             }
         }
         stage('Push Docker Image') {
@@ -44,6 +74,16 @@ pipeline {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
+                }
+            }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Push Docker Image to Private Repo '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Push Docker Image to Private Repo '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
             }
         }
@@ -59,6 +99,16 @@ pipeline {
                     enableConfigSubstitution: true
                 )
             }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Deploy to Production Kubernetes '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Deploy to Production Kubernetes '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            } 
         }
     }
 }
