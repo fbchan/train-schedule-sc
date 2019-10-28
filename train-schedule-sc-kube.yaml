@@ -43,7 +43,7 @@ spec:
           subPath: nginx.conf
       - name: train-schedule-apps
         image: reg.foobz.com.au/foobz/train-schedule-sc:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
       - name: fluentd
