@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         //Docker Hub
-        APPS_NAME = "train"
+        DISPLAY_NAME = "Trains Schedule Apps"
+        APP = "train.foobz.com.au"
         FQDN = "train.foobz.com.au"
         DOCKER_IMAGE_NAME = "reg.foobz.com.au/foobz/train-schedule-sc"
     }
@@ -92,6 +93,17 @@ pipeline {
                     slackSend (color: '#FF0000', message: "FAILED: Deploy to Production Kubernetes '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
             } 
+        }
+        stage('PublishApp- NGINX Controller') {
+            steps {
+                // Deploy AppServices with NGINX Controller
+                milestone(3)
+                build (job: "	nginx-controller-deploy-tenant-apps", 
+                       parameters: 
+                       [string(name: 'FQDN', value: FQDN),
+                       string(name: 'DISPLAY_NAME', value: DISPLAY_NAME),
+                       string(name: 'APP', value: APP)])
+            }
         }
     }
 }
