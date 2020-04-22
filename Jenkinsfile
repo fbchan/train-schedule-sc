@@ -78,8 +78,8 @@ pipeline {
                 milestone(2)
                     kubernetesDeploy(
                     kubeconfigId: 'foobz-mellab-k8s1',
-                    configs: 'train-schedule-kube.yaml',
-                    enableConfigSubstitution: true
+                    configs: 'train-schedule-sc-kube.yaml',
+                    enableConfigSubstitution: false
                 )
             }
             post {
