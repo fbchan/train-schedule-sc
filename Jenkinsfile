@@ -76,11 +76,11 @@ pipeline {
             }
             steps {
                 milestone(2)
-                kubernetesDeploy(
-                    kubeconfigId: 'foobz-mellab-k8s1',
-                    configs: 'train-schedule-sc-kube.yaml',
-                    enableConfigSubstitution: true
-                )
+                stage('Apply Kubernetes files') {
+                    withKubeConfig([credentialsId: 'foobz-mellab-k8s1']) {
+                   sh 'kubectl apply -f train-schedule-sc-kube.yaml'
+                   }
+                }
             }
             post {
                 // only triggered when blue or green sign
