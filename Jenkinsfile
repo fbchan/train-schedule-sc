@@ -104,6 +104,16 @@ pipeline {
                        string(name: 'DISPLAY_NAME', value: DISPLAY_NAME),
                        string(name: 'APP', value: APP)])
             }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Publish Application via NGINX Controller'${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Publish Application via NGINX Controller '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
         }
     }
 }
