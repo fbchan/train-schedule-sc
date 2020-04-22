@@ -98,7 +98,7 @@ pipeline {
             steps {
                 // Deploy AppServices with NGINX Controller
                 milestone(3)
-                build (job: "	nginx-controller-deploy-tenant-apps", 
+                build (job: "nginx-controller-deploy-tenant-apps", 
                        parameters: 
                        [string(name: 'FQDN', value: FQDN),
                        string(name: 'DISPLAY_NAME', value: DISPLAY_NAME),
