@@ -3,9 +3,13 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var myText = req.query.mytext; //mytext is the name of your input box
-    res.send('Train Search:' +myText); 
   res.render('index', { title: 'Express' });
+});
+
+router.post('/', function (req, res) {
+    console.log(req.body.title);
+    console.log(req.body.description);
+    res.send(req.body.search_input);
 });
 
 module.exports = router;
