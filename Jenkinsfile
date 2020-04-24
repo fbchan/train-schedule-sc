@@ -48,6 +48,23 @@ pipeline {
                 }
             }
         }
+        stage('Container Security Scan') {
+            steps {
+                echo 'Scanning container image for vulnerability ....'
+                sh 'echo "${DOCKER_IMAGE_NAME} `pwd`/Dockerfile" > anchore_images'
+                anchore forceAnalyze: true, name: 'anchore_images'
+            }
+            post {
+                // only triggered when blue or green sign
+                success {
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Container Security Scan '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+                // triggered when red sign
+                failure {
+                    slackSend (color: '#FF0000', message: "FAILED: Container Security Scan '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
+        }
         stage('Push Docker Image') {
             when {
                 branch 'master'
