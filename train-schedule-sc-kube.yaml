@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: train-schedule-svc
 spec:
+  type: LoadBalancer
   externalTrafficPolicy: Local
   loadBalancerIP: 10.5.0.22
   ports:
