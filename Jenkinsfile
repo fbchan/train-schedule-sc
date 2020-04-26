@@ -111,7 +111,7 @@ pipeline {
                 }
             }
         }
-        stage('PublishApp - NGINX App Protect Policy') {
+        stage('Publish App - NGINX App Protect Policy') {
             steps {
                 // Deploy AppServices with NGINX App Protect
                 milestone(4)
@@ -120,11 +120,11 @@ pipeline {
             post {
                 // only triggered when blue or green sign
                 success {
-                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Publish Application via NGINX App Protect'${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    slackSend (color: '#00FF00', message: "SUCCESSFUL: Published Apps and protected by NGINX App Protect '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
                 // triggered when red sign
                 failure {
-                    slackSend (color: '#FF0000', message: "FAILED: Publish Application via NGINX App Protect '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    slackSend (color: '#FF0000', message: "FAILED: Published Apps and protected NGINX App Protect '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
             }
         }
