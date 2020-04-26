@@ -75,7 +75,7 @@ pipeline {
             steps {
                 echo 'Scanning container image for vulnerability ....'
                 sh 'echo "${DOCKER_IMAGE_NAME} `pwd`/Dockerfile" > anchore_images'
-                anchore forceAnalyze: true, name: 'anchore_images'
+                anchore engineRetries: '500', forceAnalyze: true, name: 'anchore_images'
             }
             post {
                 // only triggered when blue or green sign
