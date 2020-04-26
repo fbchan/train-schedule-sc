@@ -71,7 +71,7 @@ pipeline {
                 }
             }
         }
-        stage('DeployToProduction - Kubernetes Cluster1') {
+        stage('Deploy To Prod - K8S Cluster1') {
             when {
                 branch 'master'
             }
