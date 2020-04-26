@@ -114,7 +114,7 @@ pipeline {
         stage('PublishApp - NGINX App Protect Policy') {
             steps {
                 // Deploy AppServices with NGINX App Protect
-                milestone(3)
+                milestone(4)
                 build (job: "nginx-app-protect-DevOps")
             }
             post {
